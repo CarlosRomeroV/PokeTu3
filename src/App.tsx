@@ -10,6 +10,7 @@ import OffertForm from './pages/OfferForm'
 import OfferDetail from './pages/OfferDetail'
 import { Toaster } from 'react-hot-toast'
 import GuessGame from './pages/GuessGame'
+import TCGgame from './pages/TCGgame'
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
             <Route path="/offers/:id" element={<OfferDetail/>} />
             <Route path="/offers/new" element={<OffertForm/>} />
             <Route path="/offers/edit/:id" element={<OffertForm/>} />
+            <Route path='/TCGgame' element={<TCGgame/>}/>
           </Routes>
         </div>
         </div>

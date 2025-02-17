@@ -1,5 +1,8 @@
 
 import { ChangeEvent, useEffect, useState } from "react"
+import { levenshteinDistance } from "../utils/levenshtein";
+import { autoInput } from "../utils/autoInput";
+
 
 
 
@@ -18,26 +21,39 @@ export default function GuessGame() {
     const [brightness, setBrightness] = useState('')
     const rotation = ['', 'rotate-10', 'rotate-20', 'rotate-30', 'rotate-40', 'rotate-50', 'rotate-60', 'rotate-70', 'rotate-80', 'rotate-90', 'rotate-100', 'rotate-110', 'rotate-120', 'rotate-130', 'rotate-140', 'rotate-150', 'rotate-160', 'rotate-170', 'rotate-180', 'rotate-190', 'rotate-200', 'rotate-210', 'rotate-220', 'rotate-230', 'rotate-240', 'rotate-250', 'rotate-260', 'rotate-270', 'rotate-280', 'rotate-290', 'rotate-300', 'rotate-310', 'rotate-320', 'rotate-330', 'rotate-340', 'rotate-350', 'rotate-360'];
 
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        guess()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
     useEffect(()=>{
+        //autoInput('userGuess')
         changePokemon()
+       
     },[])
+
 
 
     const guess = async ()=>{
       setBrightness('brightness-100')
 
-      if (introducedName==correctName) {
+      if (levenshteinDistance(introducedName, correctName) <= 3) {
         
         setScore(score+1)
         setRound(round+1)
         if (score+1>bestScore) {setBestScore(score+1)}
-        setTimeout(() => setRandomSpecial(rotation[Math.floor(Math.random() * rotation.length)+1]), 1000)
+        
 
         
         }else{
           setScore(0)
           setRound(0)
-        } await setTimeout(() => changePokemon().then(()=>{setIntroducedName(''); setBrightness('brightness-0')}), 1000)
+        } await setTimeout(() => changePokemon().then(()=>{
+            setIntroducedName(''); 
+            setBrightness('brightness-0'); 
+            setRandomSpecial(rotation[Math.floor(Math.random() * rotation.length)+1])}), 1000)
         
     }
 
@@ -68,16 +84,25 @@ export default function GuessGame() {
 
   return (
     <>
-        <div className="flex flex-col items-center justify-center h-screen">
-            <img src={imgUrl} alt="Pokémon" className={`transition-opacity transition-transform duration-100 w-full hover:scale-110 mb-6 brightness-0  size-80  ${randomSpecial} ${brightness}`} draggable='false'></img>
-            <input value={introducedName} name="introducedName" onChange={handleChangeName} className="text-black bg-white text-2xl p-3 rounded-2xl text-center"></input><br/><br/>
-            <button onClick={changePokemon} className="text-xl cursor-pointer bg-gradient-to-r from-blue-300 to-blue-400 p-4 px-6 rounded-2xl mb-6 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-700" >Cambiar imagen</button><br/>
-            <button id="guessButton" onClick={guess} className="text-xl cursor-pointer bg-gradient-to-r from-blue-300 to-blue-400 p-4 px-6 rounded-2xl hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-700">Adivinar</button><br/><br/><br/>
-            <h1 className="text-white">Puntuación: {score}</h1>
-            <h1 className="text-white">Récord: {bestScore}</h1>
+        <div className="h-screen w-screen max-w-[600px] bg-gray-400 flex flex-col items-center justify-center">
+        <h1 className="text-white font-bold text-3xl">Puntuación: {score}</h1>
+            <img src={imgUrl} alt="Pokémon" className={`  mb-4 brightness-0  size-80  ${randomSpecial} ${brightness}`} draggable='false'></img>
+            <div className="flex flex-row">
+              <div className="p-0.5 rounded-2xl mb-3 hover:scale-110 transition-transform duration-250">
+                <input value={introducedName} id='userGuess'  autoComplete="off" name="introducedName" onChange={handleChangeName} className="text-black focus:outline-0 mt-2 bg-white text-2xl p-3 rounded-2xl text-center"></input>
+              </div>
+              <button id="guessButton" onClick={guess} className=" transition-transform ml-3 duration-250 cursor-pointer bg-gradient-to-r hover:scale-110 from-blue-300 to-blue-400  px-6 rounded-2xl hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-700 font">
+                <img src="/send.png" className="size-7"></img>  
+              </button><br/><br/><br/>
+            </div>
+            
+            
 
-            <div>{correctName}</div>
+            <h1 className="text-white font-bold text-xl absolute bottom-5">Récord: {bestScore}</h1>
+
+            
         </div>
     </>
   )
 }
+//ignorar esta linea
