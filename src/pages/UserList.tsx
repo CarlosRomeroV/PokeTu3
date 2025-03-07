@@ -2,14 +2,11 @@ import { useEffect, useState } from 'react'
 import { getUsers } from '../services/userService'
 
 interface User{
+  g1_score: number
   id: number
   name: string
-  surname: string
   role: string
-  course: string
-  email: string
-  active: boolean
-  accepNotifications: boolean
+  notifications: boolean
 }
 function UserList() {
   const [users, setUsers] = useState<User[]>([])
@@ -46,16 +43,10 @@ function UserList() {
               Nombre
             </th>
             <th scope="col" className="px-6 py-3">
-              Apellido
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Email
-            </th>
-            <th scope="col" className="px-6 py-3">
               Rol
             </th>
             <th scope="col" className="px-6 py-3">
-              Curso
+              Puntuación Juego 1
             </th>
           </tr>
         </thead>
@@ -65,17 +56,12 @@ function UserList() {
             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               {user.name}
             </th>
-            <td className="px-6 py-4">
-              {user.surname}
-            </td>
-            <td className="px-6 py-4">
-              {user.email}
-            </td>
+
             <td className="px-6 py-4">
               {user.role}
             </td>
             <td className="px-6 py-4">
-              {user.course}
+              {user.g1_score}
             </td>
           </tr>
         )}

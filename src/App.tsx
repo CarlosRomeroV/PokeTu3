@@ -9,6 +9,8 @@ import { Toaster } from 'react-hot-toast'
 import GuessGame from './pages/GuessGame'
 import TCGgame from './pages/TCGgame'
 import GuessGameGif from './pages/GuessGameGif'
+import UserList from './pages/UserList'
+
 
 function App() {
 
@@ -27,6 +29,7 @@ function App() {
             <Route path="/guessGame" element={<GuessGame/>} />
             <Route path='/TCGgame' element={<TCGgame/>}/>
             <Route path='/guessGameGif' element={<GuessGameGif/>}/>
+            <Route path='/userList' element={<UserList/>}/>
 
           </Routes>
         </div>
